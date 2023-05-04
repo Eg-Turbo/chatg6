@@ -45,7 +45,7 @@ function LandingPage() {
           <div className="flex justify-between h-16 px-4">
             <div className="flex-shrink-0 flex items-center">
               <a href="/" className="font-bold text-lg">
-                <img src={Logo} alt="Chat g6 logo" className="w-[100px] mt-4 h-[100px]" />
+                <img src={Logo} alt="Chat g6 logo" className=" h-[60px]" />
               </a>
             </div>
             <div className="hidden sm:flex sm:items-center">

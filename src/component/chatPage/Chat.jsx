@@ -295,7 +295,7 @@ const ChatPage = () => {
               }}>
                 <SendIcon className="w-[30px] h-[30px]" />
               </button>
-              <AudioRecorder loader={loader} showLoader={showLoader} />
+              {/* <AudioRecorder loader={loader} showLoader={showLoader} /> */}
             </div>
           </div>
         </div>
