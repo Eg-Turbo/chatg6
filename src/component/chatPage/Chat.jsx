@@ -99,7 +99,7 @@ const ChatPage = () => {
 
   React.useEffect(() => {
     const token = Cookies.get("token")
-    let url = `wss://www.chatg6.ai/ws/socket-chat/?token=${token}`
+    let url = `wss://g6ai-backend.herokuapp.com/ws/socket-chat/?token=${token}`
 
     const newSocket = new WebSocket(url)
 
