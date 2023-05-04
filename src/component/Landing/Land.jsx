@@ -73,11 +73,11 @@ function LandingPage() {
         </div>
         <div className={classNames(`sm:hidden absolute top-[64px] left-0 w-full transition-all duration-3 scale-y-0 opacity-0 origin-top`,{"scale-y-100 opacity-100":isOpen,"!top-[80px]":!isScrolled})} id="mobile-menu">
           <div className={classNames("px-2 pt-2 pb-3 space-y-1 bg-white")}>
-              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
             <Link to="/">
+              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                 Home
-            </Link>
               </button>
+            </Link>
               <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" 
               onClick={()=>{
                 setIsOpen(!isOpen)
@@ -86,11 +86,11 @@ function LandingPage() {
                 Pricing
             </a>
               </button>
-              <button type="button" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
             <Link to="/chat">
+              <button type="button" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                 Chat
-            </Link>
               </button>
+            </Link>
           </div>
         </div>
       </nav>
