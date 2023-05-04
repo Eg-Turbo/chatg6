@@ -1,0 +1,195 @@
+:root{
+  --card-animated-color:#39B54A
+}
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* scroll bar hide */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none ;
+}
+/* scroll bar hide */
+
+/*start login page */
+.login-page{
+  background-image: url("../public/ai3.jpg");
+  background-size: cover;
+  background-position: center center;
+  position: relative;
+}
+.login-page::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(5 22 10 / 67%);
+  z-index: 1;
+}
+
+.login-header{
+    z-index: 2; 
+}
+.login-card{
+  overflow: hidden;
+  animation:cardShadowAnimation 300ms 300ms linear 1 forwards ;
+}
+.login-card:before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 0%;
+  height: 0%;
+  border: 3px solid #0a7d95ba;
+  border-radius: 0.5rem;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  animation:cardAnimation 500ms linear 1 forwards ;
+  z-index: -1;
+}
+.login-card:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 0%;
+  border: 3px solid #0a7d95ba;
+  border-radius: 0.5rem;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  animation:cardAnimation 500ms linear 1 forwards ;
+  z-index: -1;
+}
+.formBody {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  justify-content: center;
+}
+
+.form-Btn{
+  background-color: transparent;
+  padding: 5px 20px;
+  border: none;
+  border:2px solid #0a7d95ba;
+  color: white;
+  border-radius: 10px;
+  outline: none;
+}
+.form-Btn:active{
+  border-color: #21d0f5ba;
+}
+.form-Btn:hover{
+  border-color: #21d0f5ba;
+}
+
+@keyframes cardAnimation {
+  0%{
+      width: 0%;
+      height: 0%;
+  }
+  100%{
+      width: 100%;
+      height: 100%;
+  }
+}
+@keyframes cardShadowAnimation {
+  0%{
+      box-shadow: 0px 0px 0px 0px;
+  }
+  100%{
+      box-shadow: 0px 0px 19px 2px #0a7d95ba;
+      backdrop-filter: blur(20px);
+  }
+}
+/*End login page */
+
+
+/*start icons */
+
+.addIcon g g g line {
+  stroke: white;
+}
+.menu-icon path {
+  stroke: white;
+}
+
+/*End icons */
+
+.textarea-container::after{
+   content: attr(data-value) ;
+   padding:1rem;
+   padding-left:0.75rem;
+   border:2px solid transparent;
+   grid-area:2/1;
+    visibility: hidden;
+    white-space: pre-wrap;
+    word-break:break-all;
+
+}
+
+.loader span:first-child {
+  animation: loader 0.5s linear infinite;
+}
+.loader span:nth-child(2) {
+  animation: loader 0.5s linear 0.1s infinite;
+}
+.loader span:last-child {
+  animation: loader 0.5s linear 0.2s infinite;
+}
+@keyframes loader {
+  0% {
+    transform: translateY(-7px);
+  }
+  50%{
+    transform: translateY(7px);
+  }
+  100%{
+    transform: translateY(-7px);
+  }
+}

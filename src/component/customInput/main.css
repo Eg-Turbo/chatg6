@@ -1,0 +1,17 @@
+.custom-input input {
+    background-color: transparent ;
+    color: white ;
+    border: none;
+    outline: none;
+    padding: 10px 2px ;
+    appearance:none !important;
+    border-radius: 5px;
+    border-bottom: 2px solid #0a7d95ba;
+    
+  }
+  
+  .custom-input input:focus{
+    background-color: transparent ;
+    color: white ;
+
+  }
