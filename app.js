@@ -10,7 +10,7 @@ app.enable("trust proxy")
 
 app.use(
   function (req, res, next) {
-    if (req.protocol === "http") {
+    if (req.protocol !== "https") {
       return res.redirect(301,`https://${req.headers.host}${req.url}`)
     }
     next()
