@@ -10,8 +10,8 @@ app.enable("trust proxy")
 
 app.use(
   function (req, res, next) {
-    if (process.env.NODE_ENV !== "development" && !req.secure) {
-      return res.redirect("https://"+req.headers.host +req.url)
+    if (req.protocol === "http") {
+      return res.redirect(301,`https://${req.headers.host}${req.url}`)
     }
     next()
   }
