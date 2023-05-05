@@ -50,9 +50,7 @@ export default function LoginForm() {
                 })
             })
     }
-    React.useEffect(() => {
-        Cookies.remove("token")
-    }, [])
+
     return (
         <Form
             onSubmit={onSubmit}

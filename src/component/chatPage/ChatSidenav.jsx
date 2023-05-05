@@ -11,10 +11,13 @@ import classNames from "classnames"
 import { ReactComponent as AddIcon } from "../../assets/add-svgrepo-com.svg"
 import LiWithMenu from "./LiWithMenu"
 import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SideNav({ showSideNav, setShowSideNav, modal, changeModalState, confirmationModal, changeConfirmationState, allChats }) {
     const token = Cookies.get("token")
 
+    const navigate = useNavigate();
 
     const dispatch = useDispatch()
 
@@ -34,7 +37,11 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
         }
     })
 
+    const logOut = ()=>{
+        Cookies.remove("token")
+        navigate("/login")
 
+    }
 
     React.useEffect(() => {
         
@@ -92,10 +99,10 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
                     </Link>
                 </button>
 
-                <button className="text-md hover:bg-[white] hover:text-[rgb(0,30,63)] px-4 py-1 rounded-xl">
-                    <Link to="/login">
+                <button className="text-md hover:bg-[white] hover:text-[rgb(0,30,63)] px-4 py-1 rounded-xl" onClick={()=>{
+                    logOut()
+                }}>
                         Log out
-                    </Link>
                 </button>
 
             </div>

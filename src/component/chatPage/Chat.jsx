@@ -12,6 +12,8 @@ import { useDeleteChatMutation } from "../../redux/api/deleteChat"
 import useToast from "../../hooks/useToast"
 import { useGetMessagesQuery } from "../../redux/api/getMessages"
 import { useOlderMessagesMutation } from "../../redux/api/olderMessages"
+import { useNavigate } from 'react-router-dom';
+
 
 import ModalForm from "./ModalForm"
 import ConfirmationModal from "../confirmationModal/confirmationModal"
@@ -42,6 +44,7 @@ const ChatPage = () => {
   const { data: allMessages, refetch: refetchMessages } = useGetMessagesQuery({id:activeChat.id})
   const [olderMessages] = useOlderMessagesMutation()
   const moreinfo = useGetMessagesQuery({id:activeChat.id,p:1})
+  const navigate = useNavigate();
 
   const [initMessages,setinitMessages] = useState([])
 
@@ -201,6 +204,12 @@ const ChatPage = () => {
       }
     };
   }, [activeChat,fetchOldMessages]);
+
+  const logOut = ()=>{
+    Cookies.remove("token")
+    navigate("/login")
+
+}
   return (
 
     <div className="flex h-screen relative">
@@ -235,10 +244,8 @@ const ChatPage = () => {
               </Link>
             </button>
 
-            <button className="text-md hover:bg-[rgb(0,30,63)] hover:text-white px-4 py-1 rounded-xl">
-              <Link to="/login">
+            <button className="text-md hover:bg-[rgb(0,30,63)] hover:text-white px-4 py-1 rounded-xl" onClick={()=>{logOut()}}>          
                 Log out
-              </Link>
             </button>
 
           </div>

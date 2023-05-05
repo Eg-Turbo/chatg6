@@ -1,9 +1,18 @@
 import React from "react"
 import ResetPasswordForm from "./ResetPasswordForm";
 import { Link } from "react-router-dom";
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 export default function ResetPassword() {
 
+  const navigate = useNavigate();
 
+    React.useEffect(() => {      
+        if(Cookies.get("token")){
+            navigate("/")
+        }
+    }, [])
+    
     return (
         <div className="login-page h-screen w-screen  ">
             <header className="flex items-center justify-between z-10 relative w-full bg-transparent p-4 top-0 left-0">

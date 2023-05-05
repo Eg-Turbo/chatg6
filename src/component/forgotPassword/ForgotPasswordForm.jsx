@@ -26,9 +26,7 @@ export default function ForgotPasswordForm({ isEmailSent,changeEmailAddress }) {
                 })
             })
     }
-    React.useEffect(() => {
-        Cookies.remove("token")
-    }, [])
+
     return (
         <Form
             onSubmit={onSubmit}

@@ -2,10 +2,20 @@ import React from "react"
 import ForgotPasswordForm from "./ForgotPasswordForm";
 import { Link } from "react-router-dom";
 import classNames from "classnames"
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
 
 export default function ForgotPassword() {
     let [email, isEmailSent] = React.useState(false)
     let [emailAddress,changeEmailAddress] = React.useState("")
+  const navigate = useNavigate();
+  
+  React.useEffect(() => {
+        
+    if(Cookies.get("token")){
+        navigate("/")
+    }
+}, [])
     return (
         <div className="login-page h-screen w-screen  ">
             <header className="flex items-center justify-between z-10 relative w-full bg-transparent p-4 top-0 left-0">

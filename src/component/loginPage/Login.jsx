@@ -2,11 +2,15 @@ import React from "react";
 import LoginForm from "./LoginForm";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/logo.png"
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
 
 import jwt_decode from "jwt-decode";
 
 export default function Login() {
 
+  const navigate = useNavigate();
 
 
   const onSuccess = (response) => {
@@ -16,7 +20,12 @@ export default function Login() {
   const onFailure = (error) => {
     console.error('Login failed:', error);
   };
-
+  React.useEffect(() => {
+        
+    if(Cookies.get("token")){
+        navigate("/")
+    }
+}, [])
   return (
     <div className="login-page h-screen w-screen  ">
       <header className="flex items-center justify-end z-10 relative w-full bg-transparent p-4 pt-12 top-0 left-0">

@@ -1,14 +1,21 @@
 import React from "react"
 import { Link } from 'react-router-dom';
 import SignupForm from "./SignupForm"
-import Cookies from "js-cookie"
 import Logo from "../../assets/logo.png"
 
+import Cookies from 'js-cookie';
+import { useNavigate } from 'react-router-dom';
+
+
 export default function Signup() {
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    Cookies.remove("token")
-  }, [])
+        
+    if(Cookies.get("token")){
+        navigate("/")
+    }
+}, [])
 
   return (
     <div className="login-page h-screen w-screen  ">

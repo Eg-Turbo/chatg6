@@ -30,9 +30,7 @@ export default function ResetPasswordForm({ isEmailSent }) {
                 })
             })
     }
-    React.useEffect(() => {
-        Cookies.remove("token")
-    }, [])
+
     return (
         <Form
             onSubmit={onSubmit}
