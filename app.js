@@ -7,13 +7,16 @@ const port = process.env.PORT || 3000 // Heroku will need the PORT environment v
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.use(
-  function (req, res, next) {
-    if (!req.secure) {
-      return res.redirect(`https://${req.headers.host}${req.url}`)
-    }
-  }
-)
+// app.use(
+//   function (req, res, next) {
+//     if (req.secure) {
+//       return res.redirect(`https://${req.headers.host}${req.url}`)
+//     }
+//     if (!req.secure) {
+//       return res.redirect(`https://${req.headers.host}${req.url}`)
+//     }
+//   }
+// )
 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
