@@ -5,11 +5,11 @@ const expressEnforcesSSL = require('express-enforces-ssl');
 const app = express()
 const port = process.env.PORT || 3000 // Heroku will need the PORT environment variable
 
+app.use(express.static(path.join(__dirname, 'build')));
+
 app.use(expressEnforcesSSL());
 
 
-
-app.use(express.static(path.join(__dirname, 'build')));
 
 
 
