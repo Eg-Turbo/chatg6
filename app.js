@@ -6,14 +6,14 @@ const port = process.env.PORT || 3000 // Heroku will need the PORT environment v
 
 app.use(express.static(path.join(__dirname, 'build')));
 
-app.enable("trust proxy")
 
 app.use(
   function (req, res, next) {
-    if (req.protocol !== "https") {
+    if (req.protocol === "https") {
+      next()
+    } else {
       return res.redirect(301,`https://${req.headers.host}${req.url}`)
     }
-    next()
   }
 )
 
