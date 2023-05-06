@@ -1,9 +1,9 @@
 const express = require('express')
 const path = require('path');
-const expressEnforcesSSL = require('express-enforces-ssl');
+// const expressEnforcesSSL = require('express-enforces-ssl');
 
 const app = express()
-app.use(expressEnforcesSSL());
+// app.use(expressEnforcesSSL());
 
 const port = process.env.PORT || 3000 // Heroku will need the PORT environment variable
 
