@@ -60,7 +60,7 @@ const AudioRecorder = ({loader,showLoader}) => {
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
-        showLoader(true)
+        // showLoader(true)
         //stops the recording instance
         mediaRecorder.current.stop()
         mediaRecorder.current.onstop = () => {
@@ -83,7 +83,7 @@ const AudioRecorder = ({loader,showLoader}) => {
               }
               const blob = new Blob([arrayBuffer], { type: "video/webm" });
               const formData = new FormData();
-              formData.append("file", blob);
+              formData.append("file", audioBlob);
 
               sendVoice(formData).unwrap().then((res)=>{
                 console.log("done",res);   
@@ -161,7 +161,7 @@ const AudioRecorder = ({loader,showLoader}) => {
             <button onClick={handelRecord} className={classNames("w-[35px] h-[35px] rounded-full flex justify-center items-center bg-[rgb(0,30,63)]", { "bg-white border-[1px] border-[rgb(0,30,63)]": recordingStatus === "recording" })}>
                 {
                     !permission ? (
-                        <Mic className="w-[25px] h-[25px] fill-white" />)
+                        <Mic className="w-[25px] h-[25px] fill-red-500" />)
                         : permission && recordingStatus === "inactive" ?
                             (<Mic className="w-[25px] h-[25px] fill-white" />)
                             :

@@ -17,7 +17,9 @@ export default function ForgotPassword() {
     }
 }, [])
     return (
-        <div className="login-page h-screen w-screen  ">
+        <div className="login-page w-screen "  style={{
+            height:window.innerHeight
+          }}>
             <header className="flex items-center justify-between z-10 relative w-full bg-transparent p-4 top-0 left-0">
                 <h1 className="text-white text-lg">Chat g6</h1>
                 <div className="flex items-center gap-3">
@@ -28,7 +30,7 @@ export default function ForgotPassword() {
                     </Link>
                 </div>
             </header>
-            <div style={{ height: "calc(100vh - 64px)" }}
+            <div style={{ height: `calc(${window.innerHeight}px - 96px)` }}
                 className={classNames("flex flex-col items-center relative z-10 justify-center bg-transparent",{
                     "!justify-start":email
                 })}>

@@ -2,8 +2,12 @@ import { Form, Field } from "react-final-form";
 import { formValidate } from "./formValidate"
 import { useAddChatMutation } from "../../redux/api/addChat"
 import useToast from "../../hooks/useToast"
+import { changeActiveChat } from "../../redux/slices/activeChat"
+import { useDispatch, useSelector } from "react-redux"
+
 
 export default function ModalForm({ refetch, allChats, changeModalState }) {
+    const dispatch = useDispatch()
 
     const [addChat] = useAddChatMutation()
     const addToast = useToast()

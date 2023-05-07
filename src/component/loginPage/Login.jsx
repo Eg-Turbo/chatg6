@@ -27,7 +27,9 @@ export default function Login() {
     }
 }, [])
   return (
-    <div className="login-page h-screen w-screen  ">
+    <div className="login-page w-screen"  style={{
+      height:window.innerHeight
+    }}>
       <header className="flex items-center justify-end z-10 relative w-full bg-transparent p-4 pt-12 top-0 left-0">
         <h1 className="text-white text-lg fixed top-[10px] left-[10px]">
                 <img src={Logo} alt="Chat g6 logo" className="w-[100px] h-[100px]" />
@@ -42,7 +44,7 @@ export default function Login() {
         </div>
       </header>
       <div
-        style={{ height: "calc(100vh - 96px)" }}
+        style={{ height: `calc(${window.innerHeight}px - 96px)` }}
         className="flex flex-col items-center relative z-10 justify-center bg-transparent">
         <div className="login-card bg-transparent relative text-center transition-all duration-300 overflow-hidden rounded-lg p-8 w-72 lg:w-80 ">
           <h2 className="mb-4 text-xl font-semibold text-white">Login</h2>

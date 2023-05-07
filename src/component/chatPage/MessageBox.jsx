@@ -2,11 +2,13 @@ import React from "react"
 import { franc } from 'franc';
 import classNames from "classnames";
 import useWindowSize from "../../hooks/useWindowSize"
-
+import { ReactComponent as Copy} from "../../assets/clipboard-solid.svg"
 
 export default function MessageBox ({message}){
     const [dateMenu,openDateMenu] = React.useState(false)
     const { width } = useWindowSize()
+    const userRef = React.useRef(null)
+    const assistantRef = React.useRef(null)
     function isArabic(message) {
         const language = franc(message);
         return language === "arb" ? true : false
@@ -17,6 +19,10 @@ export default function MessageBox ({message}){
         openDateMenu(!dateMenu)
       }
 
+      function copyToClipboard(refDiv) {
+        const divContent = refDiv.current.innerText;
+        navigator.clipboard.writeText(divContent);
+      }
       const handelDate = (date) =>{
         const utcDate = new Date(date);
         
@@ -50,14 +56,18 @@ export default function MessageBox ({message}){
           }
 
     return (
-            <div className="flex flex-col justify-start items-start w-full gap-8 mb-8">
+            <div className="flex flex-col justify-start items-start w-full gap-8 mb-8 overflow-hidden">
                 <div
-                  className={classNames(`p-2 relative rounded-lg mb-2 w-fit text-left max-w-[80%] break-words !self-end bg-white ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"w-[80%]":width>776,"w-[90%]":width<450})}
+                  className={classNames(`p-2 relative rounded-lg mb-2 w-fit text-left max-w-[80%] break-words group !self-end bg-white ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"max-w-[80%]":width>776,"max-w-[90%]":width<450})}
+                  ref={userRef}
                   onClick={()=>{
                     handelDateMenu()
                   }}
                 >
                   {message.user_msg}
+                  <button onClick={()=>{copyToClipboard(userRef)}} className="absolute top-[20px] -translate-y-1/2 -right-[45px] transition-all dureation-300 group-hover:!right-[5px]">
+                  <Copy className="w-[20px] h-[20px] fill-[rgb(0,30,63)]"/>
+                  </button>
                   {/* {message.created_at && (
                     <div className={classNames("absolute top-full right-0 min-w-[110px] text-right text-[12px]",{"hidden":!dateMenu})}>
                         {handelDate(message.created_at)}
@@ -65,9 +75,14 @@ export default function MessageBox ({message}){
                   )} */}
                 </div>
                 <div
-                  className={classNames(`p-2 rounded-lg mb-2 w-fit text-left max-w-[80%] break-words self-start bg-gray-200 whitespace-pre-wrap ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"!max-w-[80%]":width > 776,"w-[90%]":width<450})}
+                  className={classNames(`p-2 rounded-lg relative mb-2 w-fit text-left max-w-[80%] break-words self-start bg-gray-200 whitespace-pre-wrap group ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"!max-w-[80%]":width > 776,"max-w-[90%]":width<450})}
+                  ref={assistantRef}
                 >
+                  
                   {message.assistant_msg}
+                  <button onClick={()=>{copyToClipboard(assistantRef)}} className="absolute top-[20px] -translate-y-1/2 -left-[45px] transition-all dureation-300 group-hover:!left-[5px]">
+                  <Copy className="w-[20px] h-[20px] fill-[rgb(0,30,63)]"/>
+                  </button>
                 </div>
               </div>
     )

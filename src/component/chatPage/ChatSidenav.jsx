@@ -14,7 +14,7 @@ import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 
-export default function SideNav({ showSideNav, setShowSideNav, modal, changeModalState, confirmationModal, changeConfirmationState, allChats }) {
+export default function SideNav({ showSideNav, setShowSideNav, modal, changeModalState, confirmationModal, changeConfirmationState, allChats, refetchAllChats }) {
     const token = Cookies.get("token")
 
     const navigate = useNavigate();
@@ -48,6 +48,8 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
         if (allChats) {
             setChats(allChats)
             dispatch(changeActiveChat(allChats[0]))
+        }else{            
+            dispatch(changeActiveChat({}))
         }
     }, [allChats, token])
 
@@ -58,9 +60,11 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
     },[width])
 
     return (
-        <div ref={sideNavRef} className={classNames(`bg-[rgb(0,30,63)] z-20 text-white w-[250px] h-full transition-all left-0 top-0 origin-left duration-300 scale-x-100 px-4`, { "fixed h-full": width < 776, "!scale-x-0 ": !showSideNav && width < 776 })}
+        <div ref={sideNavRef} className={classNames(`bg-[rgb(0,30,63)] z-20 text-white w-[250px] transition-all left-0 top-0 origin-left duration-300 scale-x-100 px-4`, { "fixed h-full": width < 776, "!scale-x-0 ": !showSideNav && width < 776 })}
             style={{
-                position: width > 776 ? "relative" : "fixed"
+                position: width > 776 ? "relative" : "fixed",
+                minHeight:window.innerHeight,
+                maxHeight:window.innerHeight
             }}
         >
             <div className="h-[60px] flex justify-start items-center">
@@ -86,7 +90,7 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
                 </div>
                 <ul className="relative  overflow-y-auto  " style={{ height: "calc(100vh - 180px)" }} ref={ulRef}>
                     {chats && chats.map((chat,index) => (
-                        <LiWithMenu chat={chat} key={chat.id} ulRef={ulRef} changeConfirmationState={changeConfirmationState} />
+                        <LiWithMenu chat={chat} key={chat.id} ulRef={ulRef} changeConfirmationState={changeConfirmationState} refetchAllChats={refetchAllChats} />
                     ))}
                 </ul>
 

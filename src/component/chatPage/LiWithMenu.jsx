@@ -28,7 +28,7 @@ export default function LiWithMenu({ chat, ulRef, changeConfirmationState }) {
     return (
         <li
             key={chat.id}
-            className={`p-2 mb-3 rounded-lg relative flex justify-between items-center cursor-pointer ${chat.id === selectedChat.id ? "border-[1px] border-white font-bold" : ""
+            className={`p-2 mb-3 relative flex justify-between border-gray-300 items-center cursor-pointer ${chat.id === selectedChat.id ? "border-[1px] rounded-lg  border-white font-bold" : ""
                 }`}
             onClick={() => {
                 dispatch(changeActiveChat(chat))

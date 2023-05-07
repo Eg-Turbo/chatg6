@@ -98,9 +98,12 @@ function LandingPage() {
 
 
       {/* Main content */}
-      <main className="">
+      <main className="" style={{
+          height:window.innerHeight
+        }}>
         {/* Hero section */}
-        <section className="bg-mainai bg-center bg-cover flex justify-center md:!justify-start items-center h-screen relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-60">
+        <section className="bg-mainai bg-center bg-cover flex h-full justify-center md:!justify-start items-center relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-60"
+         >
           <div className="max-w-7xl px-4 sm:px-6 text-center md:text-left lg:px-8 z-30">
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
