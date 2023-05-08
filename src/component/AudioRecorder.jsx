@@ -83,7 +83,7 @@ const AudioRecorder = ({loader,showLoader}) => {
               }
               const blob = new Blob([arrayBuffer], { type: "video/webm" });
               const formData = new FormData();
-              formData.append("file", audioBlob);
+              formData.append("file", audioBlob,"file.webm");
 
               sendVoice(formData).unwrap().then((res)=>{
                 console.log("done",res);   
