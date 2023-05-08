@@ -76,11 +76,10 @@ const AudioRecorder = ({loader,showLoader}) => {
 
             formData.append("file", audioBlob,"file.webm");
             sendVoice(formData).unwrap().then((res)=>{
-           
-                     showLoader(false)
+            console.log(res);
+                }).catch((err)=>{
                     
-                    }).catch((err)=>{
-                showLoader(false)
+            console.log(err);
 
             })
 
