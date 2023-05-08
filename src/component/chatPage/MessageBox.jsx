@@ -2,13 +2,21 @@ import React from "react"
 import { franc } from 'franc';
 import classNames from "classnames";
 import useWindowSize from "../../hooks/useWindowSize"
+import useClickOutside from "../../hooks/useClickOutside";
 import { ReactComponent as Copy} from "../../assets/clipboard-solid.svg"
 
 export default function MessageBox ({message}){
     const [dateMenu,openDateMenu] = React.useState(false)
+    const [userBtn,openUserBtn] = React.useState(false)
+    const [assistantBtn,openAssistantBtn] = React.useState(false)
     const { width } = useWindowSize()
     const userRef = React.useRef(null)
     const assistantRef = React.useRef(null)
+
+    const showCopyBtn = (keyword)=>{
+      keyword == "user" ? openUserBtn(!userBtn) : openAssistantBtn(!assistantBtn)
+    }
+
     function isArabic(message) {
         const language = franc(message);
         return language === "arb" ? true : false
@@ -54,18 +62,22 @@ export default function MessageBox ({message}){
 
         return `${day}/${month}/${year} at:${hours}:${minutes} ${ampm}`
           }
-
+          useClickOutside(userRef,()=>{openUserBtn(false)})
+          useClickOutside(assistantRef,()=>{openAssistantBtn(false)})
     return (
             <div className="flex flex-col justify-start items-start w-full gap-8 mb-8 overflow-hidden">
                 <div
-                  className={classNames(`p-2 relative rounded-lg mb-2 w-fit text-left max-w-[80%] break-words group !self-end bg-white ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"max-w-[80%]":width>776,"max-w-[90%]":width<450})}
+                  className={classNames(`p-2 relative rounded-lg mb-2 w-fit text-left max-w-[80%] !self-end bg-white ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"max-w-[80%]":width>776,"max-w-[90%]":width<450})}
                   ref={userRef}
+                  style={{
+                    wordBreak:"break-word"
+                  }}
                   onClick={()=>{
-                    handelDateMenu()
+                    showCopyBtn("user")
                   }}
                 >
                   {message.user_msg}
-                  <button onClick={()=>{copyToClipboard(userRef)}} className="absolute top-[20px] -translate-y-1/2 -right-[45px] transition-all dureation-300 group-hover:!right-[5px]">
+                  <button onClick={()=>{copyToClipboard(userRef)}} className={classNames("absolute top-[20px] -translate-y-1/2 -right-[45px] transition-all dureation-300",{"!right-[5px]":userBtn})}>
                   <Copy className="w-[20px] h-[20px] fill-[rgb(0,30,63)]"/>
                   </button>
                   {/* {message.created_at && (
@@ -75,12 +87,18 @@ export default function MessageBox ({message}){
                   )} */}
                 </div>
                 <div
-                  className={classNames(`p-2 rounded-lg relative mb-2 w-fit text-left max-w-[80%] break-words self-start bg-gray-200 whitespace-pre-wrap group ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"!max-w-[80%]":width > 776,"max-w-[90%]":width<450})}
+                  className={classNames(`p-2 rounded-lg relative mb-2 w-fit text-left max-w-[80%] self-start bg-gray-200 whitespace-pre-wrap ${isArabic(message.assistant_msg) ? "!text-right" : ""}`,{"!max-w-[80%]":width > 776,"max-w-[90%]":width<450})}
                   ref={assistantRef}
+                  onClick={()=>{
+                    showCopyBtn("assistant")
+                  }}
+                  style={{
+                    wordBreak:"break-word"
+                  }}
                 >
                   
                   {message.assistant_msg}
-                  <button onClick={()=>{copyToClipboard(assistantRef)}} className="absolute top-[20px] -translate-y-1/2 -left-[45px] transition-all dureation-300 group-hover:!left-[5px]">
+                  <button onClick={()=>{copyToClipboard(assistantRef)}} className={classNames("absolute top-[20px] -translate-y-1/2 -left-[45px] transition-all dureation-300",{"!left-[5px]":assistantBtn})}>
                   <Copy className="w-[20px] h-[20px] fill-[rgb(0,30,63)]"/>
                   </button>
                 </div>

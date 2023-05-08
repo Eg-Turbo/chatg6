@@ -60,7 +60,7 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
     },[width])
 
     return (
-        <div ref={sideNavRef} className={classNames(`bg-[rgb(0,30,63)] z-20 text-white w-[250px] transition-all left-0 top-0 origin-left duration-300 scale-x-100 px-4`, { "fixed h-full": width < 776, "!scale-x-0 ": !showSideNav && width < 776 })}
+        <div ref={sideNavRef} className={classNames(`bg-[rgb(0,30,63)] z-20 text-white w-[250px] transition-all left-0 top-0 origin-left duration-100 scale-x-100 px-4`, { "fixed h-full": width < 776, "!scale-x-0 ": !showSideNav && width < 776 })}
             style={{
                 position: width > 776 ? "relative" : "fixed",
                 minHeight:window.innerHeight,

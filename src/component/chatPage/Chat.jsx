@@ -222,7 +222,7 @@ const ChatPage = () => {
 
 
   return (
-
+    
     <div className="flex relative" style={{
       minHeight:window.innerHeight,
       maxHeight:window.innerHeight
@@ -253,7 +253,7 @@ const ChatPage = () => {
           <button className={classNames("text-lg absolute top-1/2 -translate-y-1/2 left-4", { "hidden": width > 776 })} onClick={() => setShowSideNav(true)}>
             <Bars className="w-[20px] h-[20px] " />
           </button>
-          <div className={classNames("text-lg font-bold", { "self-center": width < 776 })}>{activeChat.name?activeChat.name:"Create new chat"}</div>
+          <div className={classNames("sm:text-lg  font-bold", { "self-center": width < 776 })}>{activeChat.name?activeChat.name:"Create new chat"}</div>
           <div className={classNames("flex gap-2 items-center", { "hidden": width < 776 })}>
 
             <button className="text-md hover:bg-[rgb(0,30,63)] hover:text-white px-4 py-1 rounded-xl">
@@ -270,66 +270,66 @@ const ChatPage = () => {
         </div>
       {
       <>
-        <div ref={chatRef} className={classNames("flex-1 bg-[#F2F2F2] p-4 overflow-y-auto",{"!p-2 !pr-0":width<400,"hidden":!activeChat.id})}>
+        <div ref={chatRef} className={classNames("flex-1 bg-[#F2F2F2] p-4 overflow-y-scroll",{"!p-2":width<400,"hidden":!activeChat.id})}>
 
           {
             (messages !== null && messages.map((message, index) => (
-              <MessageBox message={message} key={message.id && index}/>
+            <MessageBox message={message} key={message.id && index}/>
             )))
           }
           {
             loader && <Loader className='p-2 rounded-lg mb-2 w-fit text-left max-w-[80%] break-words !self-end bg-white '/>
           }
         </div>
-        <div className={classNames(`bg-[#F2F2F2] p-4 flex items-center flex-wrap`,{"hidden":!activeChat.id})}>
-          <div data-value={inputText} className="inline-grid textarea-container w-full items-center relative pt-1 px-2 items-stretch max-h-[150px] ">
-            <div className="flex items-stretch w-full relative gap-4 max-h-[150px]" style={{
-              gridArea: "2/1"
-            }}>
-              <textarea
-                type="text"
-                placeholder="Type your message here"
-                className="bg-white w-full pr-[60px] chat-input resize-none word-break border-box pt-4 pb-0 rounded-[25px] pl-4 max-h-[150px]"
+      <div className={classNames(`bg-[#F2F2F2] p-4 flex items-center flex-wrap`,{"hidden":!activeChat.id})}>
+        <div data-value={inputText} className="inline-grid textarea-container w-full items-center relative pt-1 px-2 items-stretch max-h-[150px] ">
+          <div className="flex items-stretch w-full relative gap-4 max-h-[150px]" style={{
+            gridArea: "2/1"
+          }}>
+            <textarea
+              type="text"
+              placeholder="Type your message here"
+              className="bg-white w-full pr-[60px] chat-input resize-none word-break border-box pt-4 pb-0 rounded-[25px] pl-4 max-h-[150px]"
 
-                onChange={(e) => {
-                  setInputText(e.target.value)
-                }}
-                onKeyDown={(event) => {
-                  if (event.key === "Enter") {
-                    event.preventDefault();
+              onChange={(e) => {
+                setInputText(e.target.value)
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
 
-                    if (event.target.value.split(" ").length > 100) {
-                      addToast("error", "You reach the maximum number of words, try to make your message less than 100 words")
-                    } else if (event.target.value.length > 1000) {
-                      addToast("error", "You reach the maximum number of characters, try to make it less than 1000 character")
-                      
-                    } else if (event.target.value) {
-                      sendMessage(event.target.value)
-                      handleSendMessage(inputText);
-                      event.target.value = "";
-                    }
+                  if (event.target.value.split(" ").length > 100) {
+                    addToast("error", "You reach the maximum number of words, try to make your message less than 100 words")
+                  } else if (event.target.value.length > 1000) {
+                    addToast("error", "You reach the maximum number of characters, try to make it less than 1000 character")
+                    
+                  } else if (event.target.value) {
+                    sendMessage(event.target.value)
+                    handleSendMessage(inputText);
+                    event.target.value = "";
                   }
-                }}
-              />
-              <button onClick={() => {
-                const inputElement = document.querySelector('.chat-input');
-                if (inputElement.value) {
-                  sendMessage(inputElement.value);
-                  handleSendMessage(inputElement.value);
-                  inputElement.value = "";
                 }
-              }}>
-                <SendIcon className="w-[30px] h-[30px]" />
-              </button>
-              <AudioRecorder loader={loader} showLoader={showLoader} />
-            </div>
+              }}
+              />
+            <button onClick={() => {
+              const inputElement = document.querySelector('.chat-input');
+              if (inputElement.value) {
+                sendMessage(inputElement.value);
+                handleSendMessage(inputElement.value);
+                inputElement.value = "";
+              }
+            }}>
+              <SendIcon className="w-[30px] h-[30px]" />
+            </button>
+            <AudioRecorder loader={loader} showLoader={showLoader} />
           </div>
         </div>
-    </>
-    }
+      </div>
+      </>
+      }
       </div>
     </div>
   );
-};
+  };
 
 export default ChatPage;

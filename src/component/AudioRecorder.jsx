@@ -4,8 +4,9 @@ import useToast from "../hooks/useToast"
 import { ReactComponent as Mic } from "../assets/mic-svgrepo-com.svg"
 import { ReactComponent as Stop } from "../assets/stop-svgrepo-com.svg"
 import { useVoiceMutation } from "../redux/api/Voice";
-const mimeType = "audio/webm";
+const mimeType = 'audio/webm;codecs=opus;bitrate=128000';
 const AudioRecorder = ({loader,showLoader}) => {
+
     let counter = 1
     const [intervalId, setIntervalId] = useState("")
     const [counterDiv, showCounter] = useState(false)
@@ -26,10 +27,25 @@ const AudioRecorder = ({loader,showLoader}) => {
             try {
                 const streamData = await navigator.mediaDevices.getUserMedia({
                     audio: true,
-                    // video: false,
+                    video: false,
                 });
-                setPermission(true);
+                setRecordingStatus("recording");
+                //create new Media recorder instance using the stream
                 setStream(streamData);
+                setPermission(true);
+                const media = new MediaRecorder(streamData,{ "type": mimeType });
+                //set the MediaRecorder instance to the mediaRecorder ref
+                mediaRecorder.current = media;
+                //invokes the start method to start the recording process
+                mediaRecorder.current.start();
+                let localAudioChunks = [];
+                mediaRecorder.current.ondataavailable = (event) => {
+                    if (typeof event.data === "undefined") return;
+                    if (event.data.size === 0) return;
+                    localAudioChunks.push(event.data);
+                };
+                setAudioChunks(localAudioChunks);
+
             } catch (err) {
                 addToast("error",err.message)
 
@@ -39,24 +55,10 @@ const AudioRecorder = ({loader,showLoader}) => {
             addToast("error","The MediaRecorder API is not supported in your browser.")
 
         }
+        
     };
 
-    const startRecording = async () => {
-        setRecordingStatus("recording");
-        //create new Media recorder instance using the stream
-        const media = new MediaRecorder(stream,{ "type": mimeType });
-        //set the MediaRecorder instance to the mediaRecorder ref
-        mediaRecorder.current = media;
-        //invokes the start method to start the recording process
-        mediaRecorder.current.start();
-        let localAudioChunks = [];
-        mediaRecorder.current.ondataavailable = (event) => {
-            if (typeof event.data === "undefined") return;
-            if (event.data.size === 0) return;
-            localAudioChunks.push(event.data);
-        };
-        setAudioChunks(localAudioChunks);
-    };
+  
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
@@ -67,51 +69,34 @@ const AudioRecorder = ({loader,showLoader}) => {
             //creates a blob file from the audiochunks data
 
             const audioBlob = new Blob(audioChunks, { "type": mimeType });
+       
             const url = URL.createObjectURL(audioBlob);
-            
 
+            const formData = new FormData();
 
-            const reader = new FileReader();
-            reader.readAsDataURL(audioBlob);
-            reader.onloadend = () => {
-              const base64data = reader.result.split(",")[1];
-              const decodedData = atob(base64data);
-              const arrayBuffer = new ArrayBuffer(decodedData.length);
-              const uint8Array = new Uint8Array(arrayBuffer);
-              for (let i = 0; i < decodedData.length; i++) {
-                uint8Array[i] = decodedData.charCodeAt(i);
-              }
-              const blob = new Blob([arrayBuffer], { type: "video/webm" });
-              const formData = new FormData();
-              formData.append("file", audioBlob);
-
-              sendVoice(formData).unwrap().then((res)=>{
-                console.log("done",res);   
+            formData.append("file", audioBlob,"file.webm");
+            sendVoice(formData).unwrap().then((res)=>{
+           
                      showLoader(false)
                     
                     }).catch((err)=>{
                 showLoader(false)
-                console.log(err);
+
             })
-            };
-            const formData = new FormData();
-            // console.log({lastModified:1683108868877,lastModifiedDate:"Wed May 03 2023 13:14:28 GMT+0300 (Eastern European Summer Time)",name:"AI_Modules_hameed.webm",...audioBlob,webkitRelativePath:''});
-            // console.log({...audioBlob});
-            formData.append("file", audioBlob);
-            // console.log(formData);
-               
-            // console.log(audioChunks[0]);
+
 
             //creates a playable URL from the blob file.
-            const audioUrl = URL.createObjectURL(audioBlob);
-            setAudio(audioUrl);
             setAudioChunks([]);
+            stream.getTracks().forEach(track => track.stop());
+            setStream(null);
+            // stream
+
         };
     };
 
     const startCounter = () => {
         let intervalId;
-
+        showCounter(true)
         intervalId = setInterval(() => {
             const secondCounter = counter % 60;
             const minuteCounter = Math.floor(counter / 60);
@@ -131,27 +116,26 @@ const AudioRecorder = ({loader,showLoader}) => {
         }, 1000);
 
         setIntervalId(intervalId)
+      
     }
 
 
     const stopCounter = () => {
         clearInterval(intervalId)
+        showCounter(false)
         // setCounter(0);
         setSecond("00");
         setMinute("00");
     }
     const handelRecord = () => {
 
-        if (!permission) {
-            getMicrophonePermission()
-        } else if (permission && recordingStatus === "inactive") {
-            showCounter(true)
-            startCounter()
-            startRecording()
-        } else if (recordingStatus === "recording") {
+         if (recordingStatus === "recording") {
             showCounter(false)
             stopCounter()
             stopRecording()
+        }else {
+            getMicrophonePermission()
+            startCounter()
         }
 
     }
