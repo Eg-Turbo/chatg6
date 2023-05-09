@@ -115,7 +115,7 @@ const ChatPage = () => {
   React.useEffect(() => {
     const token = Cookies.get("token")
    
-
+    // let url = `ws://127.0.0.1:8000/ws/socket-chat/?token=${token}`
     let url = `wss://g6ai-backend.herokuapp.com/ws/socket-chat/?token=${token}`
       
     const newSocket =  new WebSocket(url)
@@ -333,7 +333,7 @@ const ChatPage = () => {
             }}>
               <SendIcon className="w-[30px] h-[30px]" />
             </button>
-            <AudioRecorder loader={loader} showLoader={showLoader} addUserMessage={handleSendMessage} sendToSocket={sendMessage}/>
+            {/* <AudioRecorder loader={loader} showLoader={showLoader} addUserMessage={handleSendMessage} sendToSocket={sendMessage}/> */}
           </div>
         </div>
       </div>
