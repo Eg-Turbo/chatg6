@@ -147,7 +147,7 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
             <button onClick={handelRecord} className={classNames("w-[35px] h-[35px] rounded-full flex justify-center items-center bg-[rgb(0,30,63)]", { "bg-white border-[1px] border-[rgb(0,30,63)]": recordingStatus === "recording" })}>
                 {
                     !permission ? (
-                        <Mic className="w-[25px] h-[25px] fill-red-500" />)
+                        <Mic className="w-[25px] h-[25px] fill-white" />)
                         : permission && recordingStatus === "inactive" ?
                             (<Mic className="w-[25px] h-[25px] fill-white" />)
                             :
