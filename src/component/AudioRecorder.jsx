@@ -4,8 +4,8 @@ import useToast from "../hooks/useToast"
 import { ReactComponent as Mic } from "../assets/mic-svgrepo-com.svg"
 import { ReactComponent as Stop } from "../assets/stop-svgrepo-com.svg"
 import { useVoiceMutation } from "../redux/api/Voice";
-const mimeType = 'audio/webm;codecs=opus;bitrate=128000';
-const AudioRecorder = ({loader,showLoader}) => {
+const mimeType = 'audio/webm;codecs=opus';
+const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
 
     let counter = 1
     const [intervalId, setIntervalId] = useState("")
@@ -33,7 +33,7 @@ const AudioRecorder = ({loader,showLoader}) => {
                 //create new Media recorder instance using the stream
                 setStream(streamData);
                 setPermission(true);
-                const media = new MediaRecorder(streamData,{ "type": mimeType });
+                const media = new MediaRecorder(streamData,{ "type": mimeType, audioBitsPerSecond:128000 });
                 //set the MediaRecorder instance to the mediaRecorder ref
                 mediaRecorder.current = media;
                 //invokes the start method to start the recording process
@@ -62,7 +62,7 @@ const AudioRecorder = ({loader,showLoader}) => {
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
-        // showLoader(true)
+        showLoader(true)
         //stops the recording instance
         mediaRecorder.current.stop()
         mediaRecorder.current.onstop = () => {
@@ -74,11 +74,14 @@ const AudioRecorder = ({loader,showLoader}) => {
 
             const formData = new FormData();
 
-            formData.append("file", audioBlob,"file.webm");
+            formData.append("file", audioBlob);
             sendVoice(formData).unwrap().then((res)=>{
+            addUserMessage(res.content)
+            sendToSocket(res.content)
             console.log(res);
+            showLoader(false)
                 }).catch((err)=>{
-                    
+                    showLoader(false)
             console.log(err);
 
             })

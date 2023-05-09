@@ -13,6 +13,7 @@ import { addChat } from "./api/addChat"
 import { getMessages } from "./api/getMessages"
 import {voice} from "./api/Voice"
 import {olderMessages} from "./api/olderMessages"
+import {logout} from "./api/logout"
 const store = configureStore({
   reducer: {
     [login.reducerPath]: login.reducer,
@@ -27,13 +28,14 @@ const store = configureStore({
     [getMessages.reducerPath]: getMessages.reducer,
     [voice.reducerPath] : voice.reducer,
     [olderMessages.reducerPath] : olderMessages.reducer,
+    [logout.reducerPath]:logout.reducer,
     activeChat: activeChat,
     deletedChat: deletedChatSlice,
 
 
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(login.middleware, registration.middleware, forgotPassword.middleware, resetPassword.middleware, googleAuth.middleware, changePassword.middleware, getChats.middleware, deleteChat.middleware, addChat.middleware, getMessages.middleware,voice.middleware,olderMessages.middleware
+    getDefaultMiddleware().concat(login.middleware, registration.middleware, forgotPassword.middleware, resetPassword.middleware, googleAuth.middleware, changePassword.middleware, getChats.middleware, deleteChat.middleware, addChat.middleware, getMessages.middleware,voice.middleware,olderMessages.middleware,logout.middleware
     ) // add middleware
 });
 

@@ -147,12 +147,12 @@
 }
 @keyframes loader {
   0% {
-    transform: translateY(-7px);
+    transform: translateY(-4px);
   }
   50%{
-    transform: translateY(7px);
+    transform: translateY(4px);
   }
   100%{
-    transform: translateY(-7px);
+    transform: translateY(-4px);
   }
 }

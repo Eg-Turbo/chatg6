@@ -12,15 +12,17 @@ import { ReactComponent as AddIcon } from "../../assets/add-svgrepo-com.svg"
 import LiWithMenu from "./LiWithMenu"
 import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
+import {useLogoutMutation} from "../../redux/api/logout"
+import useToast from "../../hooks/useToast"
 
 
 export default function SideNav({ showSideNav, setShowSideNav, modal, changeModalState, confirmationModal, changeConfirmationState, allChats, refetchAllChats }) {
     const token = Cookies.get("token")
-
+    const [logoutUser] = useLogoutMutation()
     const navigate = useNavigate();
 
     const dispatch = useDispatch()
-
+    const addToast = useToast()
     const [chats, setChats] = React.useState(
         []
     );
@@ -38,8 +40,12 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
     })
 
     const logOut = ()=>{
-        Cookies.remove("token")
-        navigate("/login")
+        logoutUser().unwrap().then(()=>{
+            Cookies.remove("token")
+            navigate("/login")
+        }).catch(()=>{
+            addToast("error","something wrong")
+        })
 
     }
 

@@ -17,7 +17,7 @@ export default function ForgotPassword() {
     }
 }, [])
     return (
-        <div className="login-page w-screen "  style={{
+        <div className="login-page w-screen"  style={{
             height:window.innerHeight
           }}>
             <header className="flex items-center justify-between z-10 relative w-full bg-transparent p-4 top-0 left-0">

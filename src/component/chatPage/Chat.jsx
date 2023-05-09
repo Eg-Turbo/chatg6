@@ -57,7 +57,8 @@ const ChatPage = () => {
   const handleSendMessage = (messagex) => {
     let battern = {
       user_msg: messagex,
-      assistant_msg: ""
+      assistant_msg: "",
+      id:""
     }
 
     setMessages((messages) => {
@@ -74,8 +75,15 @@ const ChatPage = () => {
     changeFetchOldMessagesState(false)
     // console.log("done");
   },[activeChat])
+  React.useEffect(()=>{
+    changePageNumber(2)
+  },[activeChat])
+ React.useEffect(()=>{
+  if(loader) {
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+  }
+ },[loader])
 
- 
 
   
   React.useEffect(() => {
@@ -106,13 +114,16 @@ const ChatPage = () => {
 
   React.useEffect(() => {
     const token = Cookies.get("token")
-    let url = `wss://g6ai-backend.herokuapp.com/ws/socket-chat/?token=${token}`
+   
 
-    const newSocket = new WebSocket(url)
+    let url = `wss://g6ai-backend.herokuapp.com/ws/socket-chat/?token=${token}`
+      
+    const newSocket =  new WebSocket(url)
 
     newSocket.addEventListener('open', () => {
       console.log('WebSocket connection opened');
     });
+
 
     newSocket.addEventListener('message', (event) => {
       let data = event
@@ -139,6 +150,7 @@ const ChatPage = () => {
 
     setSocket(newSocket);
 
+    
     return () => {
       newSocket.close();
     };
@@ -212,7 +224,7 @@ const ChatPage = () => {
         chatRef.current.removeEventListener('scroll', handleScroll);
       }
     };
-  }, [activeChat,fetchOldMessages]);
+  }, [activeChat,fetchOldMessages,pageNumber]);
 
   const logOut = ()=>{
     Cookies.remove("token")
@@ -274,11 +286,11 @@ const ChatPage = () => {
 
           {
             (messages !== null && messages.map((message, index) => (
-            <MessageBox message={message} key={message.id && index}/>
+            <MessageBox message={message} key={message.id || index}/>
             )))
           }
           {
-            loader && <Loader className='p-2 rounded-lg mb-2 w-fit text-left max-w-[80%] break-words !self-end bg-white '/>
+            loader && <Loader className='p-2 rounded-lg mb-2 w-fit text-left max-w-[80%] break-words !self-end ml-auto bg-white '/>
           }
         </div>
       <div className={classNames(`bg-[#F2F2F2] p-4 flex items-center flex-wrap`,{"hidden":!activeChat.id})}>
@@ -321,7 +333,7 @@ const ChatPage = () => {
             }}>
               <SendIcon className="w-[30px] h-[30px]" />
             </button>
-            <AudioRecorder loader={loader} showLoader={showLoader} />
+            <AudioRecorder loader={loader} showLoader={showLoader} addUserMessage={handleSendMessage} sendToSocket={sendMessage}/>
           </div>
         </div>
       </div>
