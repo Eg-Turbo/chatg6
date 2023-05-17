@@ -5,7 +5,7 @@ import { ReactComponent as Mic } from "../assets/mic-svgrepo-com.svg"
 import { ReactComponent as Stop } from "../assets/stop-svgrepo-com.svg"
 import { useVoiceMutation } from "../redux/api/Voice";
 const mimeType = 'audio/webm;codecs=opus';
-const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
+const AudioRecorder = ({ loader, showLoader, addUserMessage, sendToSocket, setIsInputDisabled, isInputDisabled }) => {
 
     let counter = 1
     const [intervalId, setIntervalId] = useState("")
@@ -23,8 +23,10 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
     const addToast = useToast()
 
     const getMicrophonePermission = async () => {
+
         if ("MediaRecorder" in window) {
             try {
+                setIsInputDisabled(true)
                 const streamData = await navigator.mediaDevices.getUserMedia({
                     audio: true,
                     video: false,
@@ -33,7 +35,7 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
                 //create new Media recorder instance using the stream
                 setStream(streamData);
                 setPermission(true);
-                const media = new MediaRecorder(streamData,{ "type": mimeType, audioBitsPerSecond:128000 });
+                const media = new MediaRecorder(streamData, { "type": mimeType, audioBitsPerSecond: 128000 });
                 //set the MediaRecorder instance to the mediaRecorder ref
                 mediaRecorder.current = media;
                 //invokes the start method to start the recording process
@@ -47,18 +49,18 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
                 setAudioChunks(localAudioChunks);
 
             } catch (err) {
-                addToast("error",err.message)
+                addToast("error", err.message)
 
 
             }
         } else {
-            addToast("error","The MediaRecorder API is not supported in your browser.")
+            addToast("error", "The MediaRecorder API is not supported in your browser.")
 
         }
-        
+
     };
 
-  
+
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
@@ -69,20 +71,23 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
             //creates a blob file from the audiochunks data
 
             const audioBlob = new Blob(audioChunks, { "type": mimeType });
-       
+
             const url = URL.createObjectURL(audioBlob);
 
             const formData = new FormData();
 
             formData.append("file", audioBlob);
-            sendVoice(formData).unwrap().then((res)=>{
-            addUserMessage(res.content)
-            sendToSocket(res.content)
-            console.log(res);
-            showLoader(false)
-                }).catch((err)=>{
-                    showLoader(false)
-            console.log(err);
+            sendVoice(formData).unwrap().then((res) => {
+                addUserMessage(res.content)
+                sendToSocket(res.content)
+                console.log(res);
+                showLoader(false)
+                setIsInputDisabled(false)
+
+            }).catch((err) => {
+                showLoader(false)
+                console.log(err);
+                setIsInputDisabled(false)
 
             })
 
@@ -118,7 +123,7 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
         }, 1000);
 
         setIntervalId(intervalId)
-      
+
     }
 
 
@@ -131,13 +136,15 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
     }
     const handelRecord = () => {
 
-         if (recordingStatus === "recording") {
+        if (recordingStatus === "recording") {
             showCounter(false)
             stopCounter()
             stopRecording()
-        }else {
-            getMicrophonePermission()
-            startCounter()
+        } else {
+            if (!isInputDisabled) {
+                getMicrophonePermission()
+                startCounter()
+            }
         }
 
     }
@@ -146,12 +153,10 @@ const AudioRecorder = ({loader,showLoader,addUserMessage,sendToSocket}) => {
 
             <button onClick={handelRecord} className={classNames("w-[35px] h-[35px] rounded-full flex justify-center items-center bg-[rgb(0,30,63)]", { "bg-white border-[1px] border-[rgb(0,30,63)]": recordingStatus === "recording" })}>
                 {
-                    !permission ? (
-                        <Mic className="w-[25px] h-[25px] fill-red-500" />)
-                        : permission && recordingStatus === "inactive" ?
-                            (<Mic className="w-[25px] h-[25px] fill-white" />)
-                            :
-                            (<Stop className="w-[22px] h-[22px]" />)
+                    !permission || recordingStatus === "inactive" ? (
+                        <Mic className="w-[25px] h-[25px] fill-white" />)
+                        :
+                        (<Stop className="w-[22px] h-[22px]" />)
 
                 }
 
