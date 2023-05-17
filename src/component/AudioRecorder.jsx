@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import classNames from "classnames"
 import useToast from "../hooks/useToast"
 import { ReactComponent as Mic } from "../assets/mic-svgrepo-com.svg"
@@ -60,7 +60,15 @@ const AudioRecorder = ({ loader, showLoader, addUserMessage, sendToSocket, setIs
 
     };
 
-
+    useEffect(() => {
+        if (+minute >= 1 && +second >= 0) {
+            console.log("done1");
+            showCounter(false)
+            stopCounter()
+            stopRecording()
+        }
+        console.log(minute, second);
+    }, [second])
 
     const stopRecording = () => {
         setRecordingStatus("inactive");
