@@ -1,12 +1,12 @@
 import { formValdate } from "./formValidate"
 import { useNavigate } from 'react-router-dom';
+import CustomPasswordInput from "../customInput/CustomPasswordInput"
 import { useRegistrationMutation } from "../../redux/api/registration"
 import { Form, Field } from "react-final-form";
 import { useGoogleLogin } from '@react-oauth/google';
 import { useGoogleAuthMutation } from "../../redux/api/googleAuth"
 
 import CustomInput from "../customInput/CustomInput"
-import Cookies from 'js-cookie';
 
 import useToast from "../../hooks/useToast"
 
@@ -24,7 +24,7 @@ export default function LoginForm() {
         clientId: "46506568764-mmskn93aiuqaqunupfcllc0kia8pqd29.apps.googleusercontent.com",
         onSuccess: async (googleUser) => {
             googleLog({ access_token: googleUser.access_token }).unwrap().then((res) => {
-                Cookies.set("token", res.key)
+                localStorage.setItem("token", res.key)
                 navigate("/chat")
             }).catch((err) => {
                 // console.log(err);
@@ -78,12 +78,12 @@ export default function LoginForm() {
                         </Field>
                         <Field name="password">
                             {({ input, meta }) => (
-                                <CustomInput {...input} touched={meta.touched} error={meta.error} type="password" placeholder="password" />
+                                <CustomPasswordInput {...input} touched={meta.touched} error={meta.error} type="password" placeholder="Password" />
                             )}
                         </Field>
                         <Field name="confirm">
                             {({ input, meta }) => (
-                                <CustomInput {...input} touched={meta.touched} error={meta.error} type="password" placeholder="confirm" />
+                                <CustomPasswordInput {...input} touched={meta.touched} error={meta.error} type="password" placeholder="Confirm" />
                             )}
                         </Field>
                     </div>

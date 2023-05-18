@@ -6,10 +6,15 @@ export const getMessages = createApi({
     baseQuery: customBaseQuery,
     endpoints: (builder) => ({
         getMessages: builder.query({
-            query: (data) => ({
-                url: `api/v1/chat/messages/${data.id}/`,
-                method: "get",
-            }),
+            query: (data) => {
+
+                if (data) {
+                    return {
+                        url: `api/v1/chat/messages/${data.id}/`,
+                        method: "get",
+                    }
+                }
+            },
 
         }),
     }),

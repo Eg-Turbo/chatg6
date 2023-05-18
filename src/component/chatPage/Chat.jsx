@@ -5,7 +5,6 @@ import { Link } from "react-router-dom"
 import useWindowSize from "../../hooks/useWindowSize"
 import Sidenav from "./ChatSidenav"
 import { useGetChatsQuery } from "../../redux/api/getChats"
-import Cookies from "js-cookie"
 import Loader from "../MessageLoader/Loader"
 import { useSelector } from "react-redux"
 import { useDeleteChatMutation } from "../../redux/api/deleteChat"
@@ -27,6 +26,7 @@ import AudioRecorder from "../AudioRecorder"
 import MessageBox from "./MessageBox";
 
 const ChatPage = () => {
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const dispatch = useDispatch()
   const [loader, showLoader] = useState(false)
   const { data: allChats, refetch } = useGetChatsQuery(null)
@@ -68,7 +68,29 @@ const ChatPage = () => {
 
     });
 
+    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+
+
   };
+  React.useEffect(() => {
+    // Update network status
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+    };
+    console.log(isOnline);
+    // Listen to the online status
+    window.addEventListener('online', handleStatusChange);
+
+    // Listen to the offline status
+    window.addEventListener('offline', handleStatusChange);
+
+    // Specify how to clean up after this effect for performance improvment
+    return () => {
+      window.removeEventListener('online', handleStatusChange);
+      window.removeEventListener('offline', handleStatusChange);
+    };
+  }, [isOnline]);
+
   React.useEffect(() => {
     chatRef.current.removeEventListener('scroll', handleScroll);
     setMessages(null)
@@ -113,24 +135,19 @@ const ChatPage = () => {
   }, [width])
 
   React.useEffect(() => {
-    const token = Cookies.get("token")
+
+    const token = localStorage.getItem("token")
     let url = `wss://g6ai-backend.herokuapp.com/ws/socket-chat/?token=${token}`
-
     const newSocket = new WebSocket(url)
-
     newSocket.addEventListener('open', () => {
       console.log('WebSocket connection opened');
     });
-
-
     newSocket.addEventListener('message', (event) => {
       let data = event
       let letter = JSON.parse(event.data)
-
       if (letter.status == "start") {
         chatRef.current.scrollTop = chatRef.current.scrollHeight;
         setIsInputDisabled(true)
-
       }
       if (letter.status !== null && letter.status !== "start") {
         setIsInputDisabled(false)
@@ -138,20 +155,18 @@ const ChatPage = () => {
       if (!letter.status)
         setMessages((messages) => {
           const lastMessage = messages[messages.length - 1];
-
           return [...messages.slice(0, -1), { ...lastMessage, assistant_msg: lastMessage.assistant_msg + letter.content }];
-
         });
 
-
     });
-
+    newSocket.addEventListener("error", (err) => {
+      console.log("error is", err);
+    })
     newSocket.addEventListener('close', () => {
       console.log('WebSocket connection closed');
     });
 
     setSocket(newSocket);
-
 
     return () => {
       newSocket.close();
@@ -164,8 +179,6 @@ const ChatPage = () => {
   }, [initMessages])
 
   const sendMessage = (message) => {
-    chatRef.current.scrollTop = chatRef.current.scrollHeight;
-
     let data = []
     // console.log("mesagaga",messages);
 
@@ -179,7 +192,12 @@ const ChatPage = () => {
     })
     data.unshift(["user", message])
     setIsInputDisabled(true); // disable user input
-    socket.send(JSON.stringify({ content: data, chat_id: activeChat.id }));
+    try {
+
+      socket.send(JSON.stringify({ content: data, chat_id: activeChat.id }))
+    } catch {
+      console.log("errorDe7ko");
+    }
     // console.log({ content: data,chat_id: activeChat.id});
   };
 
@@ -227,7 +245,7 @@ const ChatPage = () => {
   }, [activeChat, fetchOldMessages, pageNumber]);
 
   const logOut = () => {
-    Cookies.remove("token")
+    localStorage.removeItem("token")
     navigate("/login")
 
   }

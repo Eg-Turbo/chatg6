@@ -2,8 +2,6 @@ import React from "react"
 import { Link } from 'react-router-dom';
 import SignupForm from "./SignupForm"
 import Logo from "../../assets/logo.png"
-
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -11,19 +9,19 @@ export default function Signup() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-        
-    if(Cookies.get("token")){
-        navigate("/")
+
+    if (localStorage.getItem("token")) {
+      navigate("/")
     }
-}, [])
+  }, [])
 
   return (
-    <div className="login-page w-screen "  style={{
-      height:window.innerHeight
+    <div className="login-page w-screen " style={{
+      height: window.innerHeight
     }}>
       <header className="flex items-center justify-end z-10 relative w-full bg-transparent p-4 pt-12 top-0 left-0">
-      <h1 className="text-white text-lg fixed top-[10px] left-[10px]">
-                <img src={Logo} alt="Chat g6 logo" className="w-[100px] h-[100px]" />
+        <h1 className="text-white text-lg fixed top-[10px] left-[10px]">
+          <img src={Logo} alt="Chat g6 logo" className="w-[100px] h-[100px]" />
         </h1>
         <div className="flex items-center gap-3">
           <Link to="/login">

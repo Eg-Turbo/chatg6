@@ -9,7 +9,7 @@ import Logo from "../../assets/logo.png"
 function LandingPage() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-  const {width} = useWindowSize()
+  const { width } = useWindowSize()
 
 
   React.useEffect(() => {
@@ -23,14 +23,14 @@ function LandingPage() {
 
     window.addEventListener('scroll', handleScroll);
 
-   
+
   }, []);
 
-  React.useEffect(()=>{
-    if(width < 776) {
+  React.useEffect(() => {
+    if (width < 776) {
       setIsOpen(false)
     }
-  },[width])
+  }, [width])
 
 
 
@@ -49,12 +49,12 @@ function LandingPage() {
               </a>
             </div>
             <div className="hidden sm:flex sm:items-center">
-              <Link to="/">
-                <a className="px-3 py-2">Home</a>
+              <Link to="/" className="px-3 py-2">
+                Home
               </Link>
               <a href="#pricing" className="px-3 py-2">Pricing</a>
-              <Link to="/chat">
-                <a className="px-3 py-2">Chat</a>
+              <Link to="/chat" className="px-3 py-2">
+                Chat
               </Link>
             </div>
             <div className="-mr-2 flex items-center sm:hidden">
@@ -65,27 +65,27 @@ function LandingPage() {
                 aria-controls="mobile-menu"
                 aria-expanded={isOpen}
               >
-                  <Icon width={25} height={25} className="menu-icon" />
+                <Icon width={25} height={25} className="menu-icon" />
 
               </button>
             </div>
           </div>
         </div>
-        <div className={classNames(`sm:hidden absolute top-[64px] left-0 w-full transition-all duration-3 scale-y-0 opacity-0 origin-top`,{"scale-y-100 opacity-100":isOpen,"!top-[80px]":!isScrolled})} id="mobile-menu">
+        <div className={classNames(`sm:hidden absolute top-[64px] left-0 w-full transition-all duration-3 scale-y-0 opacity-0 origin-top`, { "scale-y-100 opacity-100": isOpen, "!top-[80px]": !isScrolled })} id="mobile-menu">
           <div className={classNames("px-2 pt-2 pb-3 space-y-1 bg-white")}>
             <Link to="/">
               <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                 Home
               </button>
             </Link>
-              <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50" 
-              onClick={()=>{
+            <button className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+              onClick={() => {
                 setIsOpen(!isOpen)
               }}>
-            <a href="#pricing">
+              <a href="#pricing">
                 Pricing
             </a>
-              </button>
+            </button>
             <Link to="/chat">
               <button type="button" className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                 Chat
@@ -99,11 +99,11 @@ function LandingPage() {
 
       {/* Main content */}
       <main className="" style={{
-          height:window.innerHeight
-        }}>
+        height: window.innerHeight
+      }}>
         {/* Hero section */}
         <section className="bg-mainai bg-center bg-cover flex h-full justify-center md:!justify-start items-center relative before:content-[''] before:absolute before:top-0 before:left-0 before:w-full before:h-full before:bg-black before:opacity-60"
-         >
+        >
           <div className="max-w-7xl px-4 sm:px-6 text-center md:text-left lg:px-8 z-30">
             <div className="text-center md:text-left">
               <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
@@ -113,17 +113,17 @@ function LandingPage() {
                 your AI-powered chat companion!
               </p>
               <button className="text-md mt-4  bg-[white] inline-block hover:bg-[rgb(0,30,63)] hover:text-white px-4 py-1 rounded-xl">
-                    <Link to="/chat">
-                        Start now
+                <Link to="/chat">
+                  Start now
                     </Link>
-                </button>
+              </button>
             </div>
           </div>
         </section>
 
         {/* Pricing section */}
 
-{/*
+        {/*
         <section className="h-[5000px]" id="pricing">
           <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -208,8 +208,8 @@ function LandingPage() {
           </div>
         </section>
         */
-}
-        
+        }
+
       </main>
     </div>
   )

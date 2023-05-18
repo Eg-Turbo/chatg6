@@ -1,9 +1,8 @@
 import React from "react"
 import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
 
 export default function ProtectedRoute({ children }) {
-    const token = Cookies.get("token")
+    const token = localStorage.getItem("token")
     const [auth, setauthState] = React.useState(false)
 
     const navigator = useNavigate()

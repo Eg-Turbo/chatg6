@@ -10,14 +10,13 @@ import useWindowSize from "../../hooks/useWindowSize"
 import classNames from "classnames"
 import { ReactComponent as AddIcon } from "../../assets/add-svgrepo-com.svg"
 import LiWithMenu from "./LiWithMenu"
-import Cookies from 'js-cookie';
 import { useNavigate } from 'react-router-dom';
-import {useLogoutMutation} from "../../redux/api/logout"
+import { useLogoutMutation } from "../../redux/api/logout"
 import useToast from "../../hooks/useToast"
 
 
 export default function SideNav({ showSideNav, setShowSideNav, modal, changeModalState, confirmationModal, changeConfirmationState, allChats, refetchAllChats }) {
-    const token = Cookies.get("token")
+    const token = localStorage.getItem("token")
     const [logoutUser] = useLogoutMutation()
     const navigate = useNavigate();
 
@@ -39,45 +38,45 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
         }
     })
 
-    const logOut = ()=>{
-        logoutUser().unwrap().then(()=>{
-            Cookies.remove("token")
+    const logOut = () => {
+        logoutUser().unwrap().then(() => {
+            localStorage.removeItem("token")
             navigate("/login")
-        }).catch(()=>{
-            addToast("error","something wrong")
+        }).catch(() => {
+            addToast("error", "something wrong")
         })
 
     }
 
     React.useEffect(() => {
-        
+
         if (allChats) {
             setChats(allChats)
             dispatch(changeActiveChat(allChats[0]))
-        }else{            
+        } else {
             dispatch(changeActiveChat({}))
         }
     }, [allChats, token])
 
-    React.useEffect(()=>{
-    if (width > 776) {
-        setShowSideNav(false)
-    }
-    },[width])
+    React.useEffect(() => {
+        if (width > 776) {
+            setShowSideNav(false)
+        }
+    }, [width])
 
     return (
         <div ref={sideNavRef} className={classNames(`bg-[rgb(0,30,63)] z-20 text-white w-[250px] transition-all left-0 top-0 origin-left duration-100 scale-x-100 px-4`, { "fixed h-full": width < 776, "!scale-x-0 ": !showSideNav && width < 776 })}
             style={{
                 position: width > 776 ? "relative" : "fixed",
-                minHeight:window.innerHeight,
-                maxHeight:window.innerHeight
+                minHeight: window.innerHeight,
+                maxHeight: window.innerHeight
             }}
         >
             <div className="h-[60px] flex justify-start items-center">
                 {/* <p className="text-2xl">Chat G6</p> */}
                 <img src={Logo} alt="Chat g6 logo" className="w-[100px] mt-12 h-[100px] mx-auto" />
 
-                
+
             </div>
 
             <div className="overflow-hidden mt-12" style={{ maxHeight: "calc(100% - 120px)" }}>
@@ -95,7 +94,7 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
                     </button>
                 </div>
                 <ul className="relative  overflow-y-auto  " style={{ height: "calc(100vh - 180px)" }} ref={ulRef}>
-                    {chats && chats.map((chat,index) => (
+                    {chats && chats.map((chat, index) => (
                         <LiWithMenu chat={chat} key={chat.id} ulRef={ulRef} changeConfirmationState={changeConfirmationState} refetchAllChats={refetchAllChats} />
                     ))}
                 </ul>
@@ -109,10 +108,10 @@ export default function SideNav({ showSideNav, setShowSideNav, modal, changeModa
                     </Link>
                 </button>
 
-                <button className="text-md hover:bg-[white] hover:text-[rgb(0,30,63)] px-4 py-1 rounded-xl" onClick={()=>{
+                <button className="text-md hover:bg-[white] hover:text-[rgb(0,30,63)] px-4 py-1 rounded-xl" onClick={() => {
                     logOut()
                 }}>
-                        Log out
+                    Log out
                 </button>
 
             </div>

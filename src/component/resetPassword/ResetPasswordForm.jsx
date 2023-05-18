@@ -2,7 +2,6 @@ import React from "react"
 import { Form, Field } from "react-final-form";
 import { fromValidate } from "./formValidate"
 import CustomPasswordInput from "../customInput/CustomPasswordInput"
-import Cookies from 'js-cookie';
 import { useResetPasswordMutation } from "../../redux/api/resetPassword"
 import useToast from "../../hooks/useToast"
 import { useParams } from 'react-router-dom';
@@ -41,12 +40,12 @@ export default function ResetPasswordForm({ isEmailSent }) {
 
                         <Field name="password">
                             {({ input, meta }) => (
-                                <CustomPasswordInput {...input} placeholder="Enter your email" touched={meta.touched} error={meta.error} />
+                                <CustomPasswordInput {...input} placeholder="New password" touched={meta.touched} error={meta.error} />
                             )}
                         </Field>
                         <Field name="confirm">
                             {({ input, meta }) => (
-                                <CustomPasswordInput {...input} placeholder="Enter your email" touched={meta.touched} error={meta.error} />
+                                <CustomPasswordInput {...input} placeholder="Confirm new password" touched={meta.touched} error={meta.error} />
                             )}
                         </Field>
                         <button type="submit" className="form-Btn">

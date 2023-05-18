@@ -2,10 +2,9 @@ import React from "react"
 import { Form, Field } from "react-final-form";
 import { fromValidate } from "./formValidate"
 import CustomInput from "../customInput/CustomInput"
-import Cookies from 'js-cookie';
 import { useForgotPasswordMutation } from "../../redux/api/forgotPasword"
 import useToast from "../../hooks/useToast"
-export default function ForgotPasswordForm({ isEmailSent,changeEmailAddress }) {
+export default function ForgotPasswordForm({ isEmailSent, changeEmailAddress }) {
 
     const [forgotPasword] = useForgotPasswordMutation()
     const addToast = useToast()
@@ -30,7 +29,7 @@ export default function ForgotPasswordForm({ isEmailSent,changeEmailAddress }) {
     return (
         <Form
             onSubmit={onSubmit}
-            validate={values => fromValidate(values,changeEmailAddress)}
+            validate={values => fromValidate(values, changeEmailAddress)}
             render={(data) => (
                 <form onSubmit={data.handleSubmit} className="w-full">
                     <div className="formBody text-white">

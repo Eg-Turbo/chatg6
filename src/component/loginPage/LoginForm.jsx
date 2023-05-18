@@ -2,7 +2,7 @@ import React from "react"
 import { Form, Field } from "react-final-form";
 import { fromValidate } from "./formValidate"
 import CustomInput from "../customInput/CustomInput"
-import Cookies from 'js-cookie';
+import CustomPasswordInput from "../customInput/CustomPasswordInput"
 import { useLoginMutation } from "../../redux/api/login"
 import { useNavigate } from 'react-router-dom';
 import { useGoogleLogin } from '@react-oauth/google';
@@ -20,7 +20,7 @@ export default function LoginForm() {
         clientId: "46506568764-mmskn93aiuqaqunupfcllc0kia8pqd29.apps.googleusercontent.com",
         onSuccess: async (googleUser) => {
             googleLog({ access_token: googleUser.access_token }).unwrap().then((res) => {
-                Cookies.set("token", res.key)
+                localStorage.setItem("token", res.key)
                 navigate("/chat")
             }).catch((err) => {
                 // console.log(err);
@@ -35,7 +35,7 @@ export default function LoginForm() {
     let onSubmit = async (values) => {
         await login({ username: values.userName, password: values.password }).unwrap()
             .then((res) => {
-                Cookies.set("token", res.key)
+                localStorage.setItem("token", res.key)
                 navigate("/chat")
             }).catch(() => {
                 addToast("error", "username or password is wrong", {
@@ -60,12 +60,12 @@ export default function LoginForm() {
                     <div className="formBody" style={{ color: "white" }}>
                         <Field name="userName" type="text">
                             {({ input, meta }) => (
-                                <CustomInput {...input} type="text" placeholder="userName" touched={meta.touched} error={meta.error} />
+                                <CustomInput {...input} type="text" placeholder="Username" touched={meta.touched} error={meta.error} />
                             )}
                         </Field>
                         <Field name="password" type="password">
                             {({ input, meta }) => (
-                                <CustomInput {...input} type="password" placeholder="password" touched={meta.touched} error={meta.error} />
+                                <CustomPasswordInput {...input} placeholder="Password" touched={meta.touched} error={meta.error} />
                             )}
                         </Field>
                         <div className="flex items-center justify-center gap-4">
